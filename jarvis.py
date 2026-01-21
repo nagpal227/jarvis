@@ -139,4 +139,6 @@ if activate.lower() == "yes":
                         json.dump(user, f, indent=4)
                     break
         if(a == 11):
+
+            print("byee")
             break
