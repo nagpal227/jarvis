@@ -141,4 +141,6 @@ if activate.lower() == "yes":
         if(a == 11):
 
             print("byee")
+            print("hello")
+            print("adfed")
             break
