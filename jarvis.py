@@ -33,7 +33,8 @@ def divide(x):
     for i in listn:
         product = product * i 
     return product
-
+    def pr():
+        print("hello")
 
 
 
