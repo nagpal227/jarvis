@@ -36,6 +36,10 @@ def divide(x):
 
 
 
+def rgz():
+    print("Hih")
+    
+
 
 
 def greeting(type,occasion ,name ="none", time = "general"):
