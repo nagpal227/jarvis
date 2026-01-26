@@ -37,6 +37,10 @@ def divide(x):
 def dvwe():
     print("Hello")
 
+def rgz():
+    print("Hih")
+    
+
 
 
 def greeting(type,occasion ,name ="none", time = "general"):
@@ -143,4 +147,5 @@ if activate.lower() == "yes":
 
             print("byee")
             print("hello")
+            print("adfed")
             break

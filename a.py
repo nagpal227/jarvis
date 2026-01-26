@@ -28,4 +28,4 @@ pygame.mixer.init()
 pygame.mixer.music.load("welcome.mp3")
 
 # Play the loaded mp3 file
-pygame.mixer.music.play()g
+pygame.mixer.music.play()
