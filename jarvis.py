@@ -33,8 +33,9 @@ def divide(x):
     for i in listn:
         product = product * i 
     return product
-
-
+    
+def dvwe():
+    print("Hello")
 
 def rgz():
     print("Hih")
