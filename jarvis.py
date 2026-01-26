@@ -34,7 +34,8 @@ def divide(x):
         product = product * i 
     return product
     
-
+def dvwe():
+    print("Hello")
 
 
 
