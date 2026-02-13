@@ -34,7 +34,21 @@ def divide(x):
         product = product * i 
     return product
 
+def createnote(name):
+    text1 = []
+    while(1>0):
+        l = input("enter line")
+        if(l =="stop"):
+            break
+        text1.append(l+"\n")
+    with open(f"{name}.txt" , "w") as file1:
+         file1.writelines(text1)
 
+def view(name):
+    with open(f"{name}.txt" , "r") as file1:
+        text2 = file1.read()
+    print(text2)
+    return
 
 
 
@@ -86,7 +100,7 @@ if activate.lower() == "yes":
         1.I can provide u with a custom greeting message
         2.Update your personal details
         3.I can perform calculations for you 
-        4.Write,save,edit,search,delete a note for you
+        4.Write, edit, view, search or delete a note for you
         5.Make a to do list
         6.Write an email for you
         7.Open a website
@@ -133,11 +147,40 @@ if activate.lower() == "yes":
                 b = input("what detail do you want to update:")
                 c =input("what do you want to change it to ?")
                 user[b] = c
-                d = input("do you want to update anything else ? ")
+                d = input("do you want to update anything else ? ")                
                 if(d.lower() == "no"):
                     with open("user_data.json", "w") as f:
                         json.dump(user, f, indent=4)
                     break
+        if(a==4):
+            print('''what do you waant to do?
+                    1.create a note
+                    2.view a note 
+                    3.edit a note
+                    4.search in a note 
+                    5.delte a note ''')
+            notes = int(input("enter the no of the task"))
+            if(notes == 1):
+                name = input("enter the name of the note")
+                createnote(name)
+                
+                
+
+
+            elif(notes == 2):
+                name = input("enter the name of the file ")
+                
+                
+                     
+            elif(notes == 3):
+                #edit a note 
+                name = input("enter the name of the file you want to edit ")
+
+            elif(notes == 4):
+            elif(notes == 5):
+            else:
+                print("no such option available")
+
         if(a == 11):
 
             print("byee")
