@@ -34,6 +34,9 @@ def divide(x):
     for i in listn:
         product = product * i 
     return product
+    
+def dvwe():
+    print("Hello")
 
 def createnote(name):
     text1 = []
@@ -267,5 +270,5 @@ if activate.lower() == "yes":
 
             print("byee")
             print("hello")
-            print("xyz")
+            print("adfed")
             break
