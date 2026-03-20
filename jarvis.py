@@ -88,9 +88,23 @@ def findword(name,word):
         print("word not found")
     else:
         print(f"word found at index{text2.find(word)}")
-       
 
+def addtodo(no):
+    with open(f"todo{no}.txt","r") as file1:
+        text = file1.readlines()
+    text.append(input("enter the task"+"\n"))
+    with open(f"todo{no}.txt","w") as file1:
+        file1.writelines(text)
 
+def deletetask(name,no):
+    with open(f"{name}.txt","r") as file1:
+        text2 = file1.readlines()
+    removed = text2.pop(no-1)
+    with open(f"{name}.txt","w")as file1:
+        file1.writelines(text2)
+    with open("deleted.txt","a") as file1:
+        file1.write(removed)
+    return
 
 
 def greeting(type,occasion ,name ="none", time = "general"):
@@ -265,6 +279,25 @@ if activate.lower() == "yes":
                 
             else:
                 print("no such option available")
+        if(a==5):
+            no = int(input("enter the no of the to do list :"))
+            while(True):
+                print('''what do you want to do ?
+                        1. add a task
+                        2. make a task completed
+                        3. delete a to do list
+                        4. you are done''')
+                task = (input(":"))
+                if(task == 1):
+                    addtodo(no)
+                elif(task == 2):
+                    print("these is your current to do  list")
+                    view(f"todo{no}")
+                    delete()
+                    
+
+                
+                
 
         if(a == 11):
 
