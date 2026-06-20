@@ -1,8 +1,14 @@
 import json
 import os
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
 with open("personaldata.json" , "r") as f :
     user = json.load(f)
 
+def writeemail():
+    print
 def add(x):
     lists = x.split(" ")
     sum = 0 
@@ -294,13 +300,13 @@ if activate.lower() == "yes":
                     print("these is your current to do  list")
                     view(f"todo{no}")
                     delete()
+                    // incomplete
                     
 
                 
                 
 
         if(a == 11):
-
             print("byee")
             print("hello")
             print("adfed")
