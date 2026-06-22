@@ -1,8 +1,62 @@
 import json
 import os
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from dotenv import load_dotenv
+from email_draft import *
+
+load_dotenv()
+setup_database()
 with open("personaldata.json" , "r") as f :
     user = json.load(f)
 
+def getmultiline():
+    print("enter your email body.press Enter twice on an empty line to finish:")
+    lines =[]
+    while True:
+        line = input()
+        if line == "":
+            break
+        lines.append(line)
+    emailbody ="\n".join(lines)
+    return emailbody
+
+
+def createemail():
+    
+    receiver_email = input("enter recievers email:")
+    subject = input("enter the subject")
+    body  = getmultiline()
+
+    choice = input("Send or save as draft? ")
+
+    if choice.lower() == "send":
+        sendemail(receiver_email, subject, body)
+
+    elif choice.lower() == "draft":
+        create_draft(receiver_email, subject, body)
+    
+
+
+def sendemail(reciever_email,subject,body): 
+    sender_email = os.getenv("email")
+    password = os.getenv("email_password")
+    message = MIMEMultipart()
+    message["From"] = sender_email
+    message["To"] = reciever_email
+    message["Subject"] = subject
+    message.attach(MIMEText(body,"plain"))
+
+    with smtplib.SMTP("smtp.gmail.com",587) as server:
+        server.starttls()
+        print("Email:", sender_email)
+        print("Password:", password)
+        server.login(sender_email,password)
+        server.send_message(message)
+
+    print("email sent successfully")
+    
 def add(x):
     lists = x.split(" ")
     sum = 0 
@@ -88,9 +142,23 @@ def findword(name,word):
         print("word not found")
     else:
         print(f"word found at index{text2.find(word)}")
-       
 
+def addtodo(no):
+    with open(f"todo{no}.txt","r") as file1:
+        text = file1.readlines()
+    text.append(input("enter the task"+"\n"))
+    with open(f"todo{no}.txt","w") as file1:
+        file1.writelines(text)
 
+def deletetask(name,no):
+    with open(f"{name}.txt","r") as file1:
+        text2 = file1.readlines()
+    removed = text2.pop(no-1)
+    with open(f"{name}.txt","w")as file1:
+        file1.writelines(text2)
+    with open("deleted.txt","a") as file1:
+        file1.write(removed)
+    return
 
 
 def greeting(type,occasion ,name ="none", time = "general"):
@@ -190,7 +258,7 @@ if activate.lower() == "yes":
                 user[b] = c
                 d = input("do you want to update anything else ? ")                
                 if(d.lower() == "no"):
-                    with open("user_data.json", "w") as f:
+                    with open("personaldata.json", "w") as f:
                         json.dump(user, f, indent=4)
                     break
         if(a==4):
@@ -265,9 +333,50 @@ if activate.lower() == "yes":
                 
             else:
                 print("no such option available")
+        if(a==5):
+            no = int(input("enter the no of the to do list :"))
+            while(True):
+                print('''what do you want to do ?
+                        1. add a task
+                        2. make a task completed
+                        3. delete a to do list
+                        4. you are done''')
+                task = (input(":"))
+                if(task == 1):
+                    addtodo(no)
+                elif(task == 2):
+                    print("these is your current to do  list")
+                    view(f"todo{no}")
+                    #delete()
+                    # incomplete
+        if(a==6):
+            print("""what do you want to do :
+                1.create a new email
+                2.see the current drafts
+                3.send an email from the drafts
+                """)
+            option = int(input("enter the number of the task"))
+            if(option == 1):
+                createemail()
+            elif(option == 2):
+                show_drafts()
+            elif(option == 3):
+                show_drafts()
+                id = int(input("which draft do you want to send"))
+                email = get_draft(id)
+                if email:
+                    reciever,subject,body = email
+                    sendemail(reciever,subject,body)
+                    mark_sent(id)
+
+
+
+          
+
+                
+                
 
         if(a == 11):
-
             print("byee")
             print("hello")
             print("adfed")
