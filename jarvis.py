@@ -3,12 +3,60 @@ import os
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from dotenv import load_dotenv
+from email_draft import *
 
+load_dotenv()
+setup_database()
 with open("personaldata.json" , "r") as f :
     user = json.load(f)
 
-def writeemail():
-    print
+def getmultiline():
+    print("enter your email body.press Enter twice on an empty line to finish:")
+    lines =[]
+    while True:
+        line = input()
+        if line == "":
+            break
+        lines.append(line)
+    emailbody ="\n".join(lines)
+    return emailbody
+
+
+def createemail():
+    
+    receiver_email = input("enter recievers email:")
+    subject = input("enter the subject")
+    body  = getmultiline()
+
+    choice = input("Send or save as draft? ")
+
+    if choice.lower() == "send":
+        sendemail(receiver_email, subject, body)
+
+    elif choice.lower() == "draft":
+        create_draft(receiver_email, subject, body)
+    
+
+
+def sendemail(reciever_email,subject,body): 
+    sender_email = os.getenv("email")
+    password = os.getenv("email_password")
+    message = MIMEMultipart()
+    message["From"] = sender_email
+    message["To"] = reciever_email
+    message["Subject"] = subject
+    message.attach(MIMEText(body,"plain"))
+
+    with smtplib.SMTP("smtp.gmail.com",587) as server:
+        server.starttls()
+        print("Email:", sender_email)
+        print("Password:", password)
+        server.login(sender_email,password)
+        server.send_message(message)
+
+    print("email sent successfully")
+    
 def add(x):
     lists = x.split(" ")
     sum = 0 
@@ -210,7 +258,7 @@ if activate.lower() == "yes":
                 user[b] = c
                 d = input("do you want to update anything else ? ")                
                 if(d.lower() == "no"):
-                    with open("user_data.json", "w") as f:
+                    with open("personaldata.json", "w") as f:
                         json.dump(user, f, indent=4)
                     break
         if(a==4):
@@ -299,9 +347,31 @@ if activate.lower() == "yes":
                 elif(task == 2):
                     print("these is your current to do  list")
                     view(f"todo{no}")
-                    delete()
-                    // incomplete
-                    
+                    #delete()
+                    # incomplete
+        if(a==6):
+            print("""what do you want to do :
+                1.create a new email
+                2.see the current drafts
+                3.send an email from the drafts
+                """)
+            option = int(input("enter the number of the task"))
+            if(option == 1):
+                createemail()
+            elif(option == 2):
+                show_drafts()
+            elif(option == 3):
+                show_drafts()
+                id = int(input("which draft do you want to send"))
+                email = get_draft(id)
+                if email:
+                    reciever,subject,body = email
+                    sendemail(reciever,subject,body)
+                    mark_sent(id)
+
+
+
+          
 
                 
                 
