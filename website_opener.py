@@ -54,12 +54,12 @@ def website_opener_from_database(name):
                 last_opened = ?
                 WHERE name = ?
                 """, (datetime.now(), name.lower()))
-                conn.commit
+                conn.commit()
                 print(f"opening {name}")
             else:
                 print("website not found")
                 
-        conn.close
+        conn.close()
 
 def show_saved_websites():
     conn = sqlite3.connect("jarvis.db")
@@ -78,6 +78,69 @@ def show_saved_websites():
             print(f"ID: {website[0]}")
             print(f"Name: {website[1]}")
             print("--------------------")
-    conn.close
+    conn.close()
+
+def show_history():
+    conn = sqlite3.connect("jarvis.db")
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    SELECT id,name,link,usage_count,last_opened
+    FROM  websites
+    """)
+    website_database = cursor.fetchall()
+
+    if len(website_database) == 0:
+        print("no data base available")
+    else:
+        for website in website_database:
+            if(website[3]>0):
+                print(f"ID: {website[0]}")
+                print(f"Name: {website[1]}")
+                print(f"No of times visited: {website[3]}")
+                print(f"Last visited : {website[4]}")
+                print("--------------------")
+    conn.close()
+
+def delete_website(name):
+    conn = sqlite3.connect("jarvis.db")
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    DELETE FROM websites
+    WHERE name = ?
+    """, (name.lower(),))
+
+    conn.commit()
+
+    if cursor.rowcount > 0:
+        print(f"{name} deleted successfully")
+    else:
+        print("Website not found")
+
+    conn.close()
+
+def open_using_link(link):
+    webbrowser.open(link)
+    conn = sqlite3.connect("jarvis.db")
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    INSERT INTO websites(name,link,last_opened)
+    VALUES(?,?,?)
+    """,(link,link,"NULL"))
+
+    conn.commit()
+    conn.close()
+    conn = sqlite3.connect("jarvis.db")
+    cursor = conn.cursor()
+    cursor.execute("""
+                UPDATE websites
+                SET usage_count = usage_count + 1,
+                last_opened = ?
+                WHERE name = ?
+                """, (datetime.now(), link))
+    conn.commit()            
+    conn.close()
 
     

@@ -392,6 +392,18 @@ if activate.lower() == "yes":
                     show_saved_websites()
                     website_name = input("enter the name of the website")
                     website_opener_from_database(website_name)
+                elif(website_no ==3):
+                    print("these are your saveed websites")
+                    show_saved_websites()
+                elif(website_no ==4):
+                    print("History:")
+                    show_history()
+                elif(website_no ==5):
+                    website_name = input("Enter the website name :")
+                    delete_website(website_name)
+                elif(website_no == 6):
+                    website_link = input("Enter the link of the website :")
+
                 elif(website_no == 7):
                     break
 
