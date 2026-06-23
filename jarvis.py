@@ -5,9 +5,12 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from dotenv import load_dotenv
 from email_draft import *
+import webbrowser
+from website_opener import *
 
 load_dotenv()
 setup_database()
+setup_website_database()
 with open("personaldata.json" , "r") as f :
     user = json.load(f)
 
@@ -368,6 +371,35 @@ if activate.lower() == "yes":
                     reciever,subject,body = email
                     sendemail(reciever,subject,body)
                     mark_sent(id)
+        if(a==7):
+            print("""
+                what do you want to do ?:
+                1.add a website
+                2.open a saved website 
+                3.show saved websites
+                4.show history
+                5.delete a saved website
+                6.open website using link
+                7.exit from website function""")
+            while(True):
+                website_no  = int(input("enter the website function :"))
+                if(website_no == 1 ):
+                    website_name = input("enter the name of the website :")
+                    website_link = input("enter the link of the website :")
+                    add_website(website_name,website_link)
+                elif(website_no == 2):
+                    print("these are your saveed websites")
+                    show_saved_websites()
+                    website_name = input("enter the name of the website")
+                    website_opener_from_database(website_name)
+                elif(website_no == 7):
+                    break
+
+
+
+
+
+
 
 
 
